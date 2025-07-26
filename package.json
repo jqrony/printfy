@@ -1,0 +1,45 @@
+{
+  "name": "printfy",
+  "version": "1.0.0",
+  "description": "C-style printf formatting for JavaScript with padding and precision.",
+  "main": "printfy.js",
+  "exports": {
+    "require": "./printfy.js",
+    "import": "./printfy.js"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "build": "terser printfy.js -o printfy.min.js"
+  },
+  "keywords": [
+    "printf",
+    "sprint",
+    "vsprint",
+    "format",
+    "string-formatting",
+    "javascript-printf",
+    "vsprintf",
+    "c-style-formatting",
+    "console-format",
+    "pad",
+    "float",
+    "precision",
+    "formatter"
+  ],
+  "author": {
+    "name": "Indian Modassir",
+    "email": "indianmodassir@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jqrony/printfy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jqrony/printfy/issues"
+  },
+  "homepage": "https://github.com/indianmodassir",
+  "engines": {
+    "node": ">=12"
+  }
+}
