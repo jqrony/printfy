@@ -2,14 +2,14 @@
   "name": "printfy",
   "version": "1.0.0",
   "description": "C-style printf formatting for JavaScript with padding and precision.",
-  "main": "printfy.js",
+  "main": "lib/printfy.js",
   "exports": {
-    "require": "./printfy.js",
-    "import": "./printfy.js"
+    "require": "./lib/printfy.js",
+    "import": "./lib/printfy.js"
   },
   "scripts": {
     "test": "node test.js",
-    "build": "terser printfy.js -o printfy.min.js"
+    "build": "terser lib/printfy.js -o lib/printfy.min.js"
   },
   "keywords": [
     "printf",
