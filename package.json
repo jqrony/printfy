@@ -37,5 +37,8 @@
   "homepage": "https://github.com/indianmodassir",
   "engines": {
     "node": ">=12"
+  },
+  "devDependencies": {
+    "terser": "^5.30.1"
   }
 }
