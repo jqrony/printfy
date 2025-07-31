@@ -1,12 +1,8 @@
 {
   "name": "printfy",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "C-style printf formatting for JavaScript with padding and precision.",
   "main": "lib/printfy.js",
-  "exports": {
-    "require": "./lib/printfy.js",
-    "import": "./lib/printfy.js"
-  },
   "scripts": {
     "test": "node test.js",
     "build": "terser lib/printfy.js -o lib/printfy.min.js"
@@ -33,10 +29,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jqrony/printfy.git"
+    "url": "https://github.com/jsvibe/printfy.git"
   },
   "bugs": {
-    "url": "https://github.com/jqrony/printfy/issues"
+    "url": "https://github.com/jsvibe/printfy/issues"
   },
   "homepage": "https://github.com/indianmodassir",
   "engines": {

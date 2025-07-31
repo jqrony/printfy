@@ -1,9 +1,8 @@
 # printfy [![npm version](https://img.shields.io/npm/v/printfy?style=flat-square)](https://www.npmjs.com/package/printfy)
 
+A lightweight JavaScript library implements C-style `printf` functionality.
 
-> A lightweight JavaScript library implements C-style `printf` functionality.
-
-![license](https://img.shields.io/github/license/jqrony/printfy?style=flat-square&color=blue)
+![license](https://img.shields.io/github/license/jsvibe/printfy?style=flat-square&color=blue)
 ![author](https://img.shields.io/badge/Author-Indian%20Modassir-blue?style=flat-square)
 [![jsDelivr Hits](https://img.shields.io/jsdelivr/npm/hm/printfy?style=flat-square)](https://www.jsdelivr.com/package/npm/printfy)
 [![downloads month](https://img.shields.io/npm/dm/printfy?style=flat-square)](https://www.npmjs.com/package/printfy)
@@ -15,11 +14,16 @@
 - Fully functional `printf`, `sprint`, and `vsprint` methods.
 - C-style format specifiers support:
   - `%d`, `%f`, `%s`, `%x`, `%b`, `%o`, `%u`, `%c`, `%e`, `%g`, `%G`, etc.
-- Positional arguments: e.g. `%2$s`
+-  Padding, alignment, width, and precision controls
+- Argument indexing like `%2$08.2f`
+- Supports most common C-style format specifiers.
+- Distinct handling for `%f` (locale) and `%F` (non-locale)
+- Float, Integer, Hex, Octal, Binary, Char, and String formatting
 - Custom width, padding, alignment flags.
 - Float precision control up to JavaScript's max (53 bits).
 - Handles NaN, Infinity and signed values.
 - Works in **Node.js**, modern browsers, and CommonJS/AMD environments.
+- No external dependencies
 
 ---
 
@@ -34,7 +38,7 @@ npm install printfy
 Clone a copy of the main Sizzle git repo by running:
 
 ```bash
-git clone git://github.com/jqrony/printfy.git
+git clone git://github.com/jsvibe/printfy.git
 ```
 
 In the `printfy/dist` folder you will find build version of printfy along with the minified file.
@@ -47,7 +51,7 @@ Below are some of the most common ways to include printfy.
 **CDN Link**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/printfy@4.3.0/dist/printfy.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/printfy@2.0.0/dist/printfy.min.js"></script>
 ```
 
 You can add the script manually to your project:
@@ -103,20 +107,30 @@ vsprint("User: %s, Score: %d", ["Bob", 100]);
 
 ## 🔢 Supported Specifiers
 
-| Specifier | Meaning                             | Example             |
-|-----------|-------------------------------------|---------------------|
-| `%s`      | String                               | `sprint("%s", "abc")` → `"abc"` |
-| `%S`      | Uppercase string                     | `"abc"` → `"ABC"`   |
-| `%d`      | Integer (decimal)                    | `42`                |
-| `%u`      | Unsigned integer (64-bit)            | `-1` → `"18446744073709551615"` |
-| `%b`      | Binary                                | `5` → `"101"`       |
-| `%o`      | Octal                                 | `8` → `"10"`        |
-| `%x`, `%X`| Hexadecimal (lower/upper)             | `255` → `"ff"` or `"FF"` |
-| `%f`, `%F`| Float (fixed-point)                   | `3.14` → `"3.140000"` |
-| `%e`, `%E`| Float (scientific notation)           | `3.14` → `"3.14e+0"` |
-| `%g`, `%G`| Auto float/scientific (shortest form) | `123000` → `"1.23e+5"` |
-| `%c`      | Character from ASCII code             | `65` → `"A"`        |
-| `%%`      | Literal percent sign                  | `%`                 |
+| Specifier | Meaning                               | Example                         |
+|-----------|---------------------------------------|---------------------------------|
+| `%s`      | String                                | `sprint("%s", "abc")` → `"abc"` |
+| `%S`      | Uppercase string                      | `"abc"` → `"ABC"`               |
+| `%d`      | Integer (decimal)                     | `42`                            |
+| `%u`      | Unsigned integer (64-bit)             | `-1` → `"18446744073709551615"` |
+| `%b`      | Binary                                | `5` → `"101"`                   |
+| `%o`      | Octal                                 | `8` → `"10"`                    |
+| `%x`, `%X`| Hexadecimal (lower/upper)             | `255` → `"ff"` or `"FF"`        |
+| `%f`, `%F`| Float (fixed-point)                   | `3.14` → `"3.140000"`           |
+| `%e`, `%E`| Float (scientific notation)           | `3.14` → `"3.14e+0"`            |
+| `%g`, `%G`| Auto float/scientific (shortest form) | `123000` → `"1.23e+5"`          |
+| `%c`      | Character from ASCII code             | `65` → `"A"`                    |
+| `%%`      | Literal percent sign                  | `%`                             |
+
+---
+
+## ⚙️ Format Options
+
+**Format syntax:**
+
+```
+%[index$][padding][flag][width][.precision]specifier
+```
 
 ---
 
@@ -143,6 +157,22 @@ sprint("Scientific: %.2e", 1200);   // Scientific: 1.20e+3
 
 ---
 
+## 🔄 Comparison with Other Libraries
+
+| Feature / Library      | printfy ✅         | sprintf-js 🟡 | fast-printf 🟢 | printf (npm) 🔵    |
+| ---------------------- | ------------------ | ------------- | -------------- | -------------------- |
+| C-style specifiers     | ✅ Full            | ✅ Full        | ✅ Partial      | ✅ Partial       |
+| %2\$ style arg index   | ✅ Yes             | ✅ Yes         | ❌ No           | ❌ No            |
+| BigInt support         | ✅ Yes             | ❌ No          | ❌ No           | ❌ No            |
+| %f vs %F (locale)      | ✅ Separate        | ❌ Combined    | ❌ Combined     | ❌ No            |
+| Custom padding ('x)    | ✅ `'x`, `0`, etc. | ❌ No          | ❌ No           | ❌ No            |
+| String return (sprint) | ✅ Yes             | ✅ Yes         | ✅ Yes          | ❌ No            |
+| Lightweight / No deps  | ✅ Yes             | ✅ Yes         | ✅ Yes          | ✅ Yes           |
+| Unicode emoji safe     | Partial            | Partial         | ❌ No           | ❌ No            |
+| Performance            | Good               | Good            | Best             | Good             |
+
+---
+
 ## 📦 Module Support
 
 This library supports the following environments:
@@ -155,7 +185,7 @@ This library supports the following environments:
 
 ## 🔐 License
 
-MIT License © 2025 [Indian Modassir](https://github.com/jqrony)  
+MIT License © 2025 [Indian Modassir](https://github.com/indianmodassir)  
 See [LICENSE](LICENSE) for details.
 
 ---
@@ -163,6 +193,6 @@ See [LICENSE](LICENSE) for details.
 ## 🙌 Contributions
 
 Pull requests, bug reports, and feedback are welcome!  
-Visit the [GitHub Repository](https://github.com/jqrony) to contribute.
+Visit the [GitHub Repository](https://github.com/jsvibe/printfy) to contribute.
 
 ---
