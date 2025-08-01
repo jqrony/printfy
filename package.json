@@ -1,6 +1,6 @@
 {
   "name": "printfy",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "C-style printf formatting for JavaScript with padding and precision.",
   "main": "lib/printfy.js",
   "scripts": {

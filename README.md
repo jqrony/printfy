@@ -11,7 +11,7 @@ A lightweight JavaScript library implements C-style `printf` functionality.
 
 ## 🌟 Features
 
-- Fully functional `printf`, `sprint`, and `vsprint` methods.
+- Fully functional `printf`, `sprintf`, and `vsprintf` methods.
 - C-style format specifiers support:
   - `%d`, `%f`, `%s`, `%x`, `%b`, `%o`, `%u`, `%c`, `%e`, `%g`, `%G`, etc.
 -  Padding, alignment, width, and precision controls
@@ -51,7 +51,7 @@ Below are some of the most common ways to include printfy.
 **CDN Link**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/printfy@2.0.1/dist/printfy.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/printfy@2.0.2/dist/printfy.min.js"></script>
 ```
 
 You can add the script manually to your project:
@@ -64,7 +64,7 @@ You can add the script manually to your project:
 There are several ways to use [Webpack](https://webpack.js.org/), [Browserify](http://browserify.org/) or [Babel](https://babeljs.io/). For more information on using these tools, please refer to the corresponding project's documentation. In the script, including printfy will usually look like this:
 
 ```js
-import {sprint, printf, vsprint} from "printfy";
+import {sprintf, printf, vprintf, vsprintf} from "printfy";
 ```
 
 ### Node.js
@@ -72,7 +72,7 @@ import {sprint, printf, vsprint} from "printfy";
 Fully compatible with [Node.js](https://nodejs.org/), this library lets you use familiar C-style printf formatting in server-side code—ideal for CLI tools, logging, and backend output formatting.
 
 ```js
-const {sprint, printf, vsprint} = require("printfy");
+const {sprintf, printf, vprintf, vsprintf} = require("printfy");
 ```
 
 ---
@@ -87,19 +87,27 @@ printf("Hello %s, you have %d new messages", "Alice", 5);
 // Output: Hello Alice, you have 5 new messages
 ```
 
-### `sprint(format, ...args)`
+### `vprintf(format, args[])`
+Logs the formatted output to the console.
+
+```js
+printf("Hello %s, you have %d new messages", [ "Alice", 5]);
+// Output: Hello Alice, you have 5 new messages
+```
+
+### `sprintf(format, ...args)`
 Returns a formatted string (like `sprintf` in C).
 
 ```js
-let result = sprint("Value: %08.2f", 3.14);
+let result = sprintf("Value: %08.2f", 3.14);
 console.log(result); // Output: Value: 00003.14
 ```
 
-### `vsprint(format, args[])`
-Same as `sprint`, but accepts arguments as an array.
+### `vsprintf(format, args[])`
+Same as `sprintf`, but accepts arguments as an array.
 
 ```js
-vsprint("User: %s, Score: %d", ["Bob", 100]);
+vsprintf("User: %s, Score: %d", ["Bob", 100]);
 // Output: User: Bob, Score: 100
 ```
 
@@ -109,7 +117,7 @@ vsprint("User: %s, Score: %d", ["Bob", 100]);
 
 | Specifier | Meaning                               | Example                         |
 |-----------|---------------------------------------|---------------------------------|
-| `%s`      | String                                | `sprint("%s", "abc")` → `"abc"` |
+| `%s`      | String                                | `sprintf("%s", "abc")` → `"abc"` |
 | `%S`      | Uppercase string                      | `"abc"` → `"ABC"`               |
 | `%d`      | Integer (decimal)                     | `42`                            |
 | `%u`      | Unsigned integer (64-bit)             | `-1` → `"18446744073709551615"` |
@@ -137,14 +145,80 @@ vsprint("User: %s, Score: %d", ["Bob", 100]);
 ## 🧪 Examples
 
 ```js
-sprint("Binary: %08b", 5);            // Binary: 00000101
-sprint("Hex: %#x", 255);             // Hex: ff
-sprint("Char: %c", 65);             // Char: A
-sprint("Padded: %10s", "text");     // Padded:      text
-sprint("Left: %-10s!", "text");     // Left: text     !
-sprint("Float: %.2f", 3.14159);     // Float: 3.14
-sprint("Scientific: %.2e", 1200);   // Scientific: 1.20e+3
+sprintf("Binary: %08b", 5);          // Binary: 00000101
+sprintf("Hex: %#x", 255);            // Hex: ff
+sprintf("Char: %c", 65);             // Char: A
+sprintf("Padded: %10s", "text");     // Padded:      text
+sprintf("Left: %-10s!", "text");     // Left: text     !
+sprintf("Float: %.2f", 3.14159);     // Float: 3.14
+sprintf("Scientific: %.2e", 1200);   // Scientific: 1.20e+3
 ```
+
+**[index$] – Argument Indexing**
+```js
+sprintf('%2$s is %1$d years old.', 22, 'Modassir');
+// Output: Modassir is 22 years old.
+```
+
+**[padding] – Custom Padding Character**
+```js
+sprintf("%'~5d", 42);
+// Output: ~~~42
+
+sprintf("%'~-5d", 42);
+// Output: 42~~~
+```
+
+**[flag] – Format Flags**
+
+Support flags `+` and `-` only.
+
+```js
+sprintf("%+d", 42);
+// Output: +45
+
+sprintf("%-d", 42);
+// Output: -45
+```
+
+**[width] – Custom Width**
+```js
+sprintf("%6s", "JS");
+// Output: "    JS"
+
+sprintf("lang%6s", "JS");
+// Output: "lang    JS"
+
+sprintf("%-6s", "JS");
+// Output: "JS    "
+
+sprintf("%-6slib", "JS");
+// Output: "JS    lib"
+```
+
+**[.precision] – Precision (floating-point or string truncation)**
+```js
+sprintf("%.2f", 3.14159);
+// Output: 3.14
+
+sprintf("%.4s", "OpenAI");
+// Output: Open
+```
+
+**Full Format**
+```js
+sprintf('%2$\'#-+10.2f and %1$\'*_10s', "JS", 3.14159);
+// Output: +3.14#####JS*******
+```
+
+🔹 Explanation:
+- `%2$`: Second argument (`3.14159`)
+- `'#`: padding character `#`
+- `-`: left align
+- `+`: show sign
+- `10`: total width 10
+- `.2f`: 2 decimal places
+- `%1$'*_10s`: First argument (`JS`), padded with `*` to width 10
 
 ---
 
@@ -160,13 +234,13 @@ sprint("Scientific: %.2e", 1200);   // Scientific: 1.20e+3
 ## 🔄 Comparison with Other Libraries
 
 | Feature / Library      | printfy ✅         | sprintf-js 🟡 | fast-printf 🟢 | printf (npm) 🔵    |
-| ---------------------- | ------------------ | ------------- | -------------- | -------------------- |
+| ---------------------- | ------------------ | --------------- | --------------- | ----------------- |
 | C-style specifiers     | ✅ Full            | ✅ Full        | ✅ Partial      | ✅ Partial       |
 | %2\$ style arg index   | ✅ Yes             | ✅ Yes         | ❌ No           | ❌ No            |
 | BigInt support         | ✅ Yes             | ❌ No          | ❌ No           | ❌ No            |
 | %f vs %F (locale)      | ✅ Separate        | ❌ Combined    | ❌ Combined     | ❌ No            |
 | Custom padding ('x)    | ✅ `'x`, `0`, etc. | ❌ No          | ❌ No           | ❌ No            |
-| String return (sprint) | ✅ Yes             | ✅ Yes         | ✅ Yes          | ❌ No            |
+| String return (sprintf)| ✅ Yes             | ✅ Yes         | ✅ Yes          | ❌ No            |
 | Lightweight / No deps  | ✅ Yes             | ✅ Yes         | ✅ Yes          | ✅ Yes           |
 | Unicode emoji safe     | Partial            | Partial         | ❌ No           | ❌ No            |
 | Performance            | Good               | Good            | Best             | Good             |
