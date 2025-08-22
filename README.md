@@ -7,7 +7,7 @@ A lightweight JavaScript library implements C-style `printf` functionality.
 ![license](https://img.shields.io/github/license/jsvibe/printfy?color=blue)
 [![downloads month](https://img.shields.io/npm/dm/printfy)](https://www.npmjs.com/package/printfy)
 [![jsDelivr Hits](https://img.shields.io/jsdelivr/npm/hm/printfy?logo=jsdelivr)](https://www.jsdelivr.com/package/npm/printfy)
-![author](https://img.shields.io/badge/Author-Modassir-blue)
+[![author](https://img.shields.io/badge/Author-Modassir-blue)](https://github.com/indianmodassir)
 [![Publish Package to npm](https://github.com/jsvibe/printfy/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/jsvibe/printfy/actions/workflows/npm-publish.yml)
 
 ---
