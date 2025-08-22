@@ -1,5 +1,6 @@
 .github
 .gitignore
 CHANGELOG.md
+package-lock.json
 /test
 /node_modules

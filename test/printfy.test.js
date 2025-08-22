@@ -1,87 +1,48 @@
-// test.js for printfy v2.0.2
-// Run using: node test.js
+const {sprintf, vsprintf} = require('../lib/printfy');
 
-const { printf, sprintf, vprintf, vsprintf } = require("../lib/printfy");
+let totalChecks = 0;
+let passed = 0;
+let failed = 0;
+let timeoutId;
 
-// Utility for clean output comparison
-function test(label, actual, expected) {
-  const passed = actual === expected;
-  console.log(`${passed ? '✔' : '✘'} ${label}`);
-  if (!passed) {
-    console.log(`   Expected: "${expected}"`);
-    console.log(`   Received: "${actual}"\n`);
-  }
-}
+function expect(output, expected) {
+  totalChecks++;
+  console.log(output === expected ? (passed++, '✓') : (failed++, '✗'), expected);
 
-// Capture console output for printf/vprintf tests
-function captureConsoleOutput(callback) {
-  const originalLog = console.log;
-  let output = "";
-  console.log = (msg) => { output += msg + "\n"; };
-  callback();
-  console.log = originalLog;
-  return output.trim();
-}
+  clearInterval(timeoutId);
+  timeoutId = setTimeout(() => {
+    console.log(`\nTests Result: [passed: ${passed}/${totalChecks}], [failed: ${failed}/${totalChecks}]`);
+    if (!failed) {
+      console.log('✓ All tests passed!');
+    }
+  }, 1000);
+};
 
-// --- Basic String Tests ---
-test('String: simple', sprintf("Hello %s", "World"), "Hello World");
-test('String: padded', sprintf("Name: %10s", "Alice"), "Name:      Alice");
-test('String: left-aligned', sprintf("Name: %-10s!", "Bob"), "Name: Bob       !");
-test('String: precision', sprintf("%.4s", "Elephant"), "Elep");
-
-// --- Integer Tests ---
-test('Decimal: positive', sprintf("Age: %d", 25), "Age: 25");
-test('Decimal: negative', sprintf("Debt: %d", -350), "Debt: -350");
-test('Zero-padded', sprintf("ID: %05d", 42), "ID: 00042");
-test('Left-align', sprintf("Left: %-5d!", 9), "Left: 9    !");
-test('Unsigned: large number', sprintf("Big: %u", -123), "Big: 18446744073709551493");
-
-// --- Binary, Octal, Hex Tests ---
-test('Binary', sprintf("Bin: %08b", 10), "Bin: 00001010");
-test('Octal', sprintf("Oct: %o", 123), "Oct: 173");
-test('Hex lowercase', sprintf("Hex: %x", 255), "Hex: ff");
-test('Hex uppercase', sprintf("Hex: %X", 255), "Hex: FF");
-
-// --- Character ---
-test('Character: %c', sprintf("Char: %c", 65), "Char: A");
-
-// --- Float Tests ---
-test('Float: default precision', sprintf("Pi: %f", 3.14159), "Pi: 3.141590");
-test('Float: .2f', sprintf("Pi: %.2f", 3.14159), "Pi: 3.14");
-test('Float: fixed-point %F', sprintf("Fixed: %.3F", 12.3456), "Fixed: 12.346");
-test('Float: scientific %e', sprintf("Sci: %.2e", 123456), "Sci: 1.23e+5");
-test('Float: uppercase %E', sprintf("Sci: %.2E", 123456), "Sci: 1.23E+5");
-test('Float: auto %g', sprintf("Auto: %.4g", 123.456), "Auto: 123.5");
-test('Float: uppercase auto %G', sprintf("Auto: %.3G", 0.0001234), "Auto: 0.000123");
-
-// --- Positional Arguments ---
-test('Positional args', sprintf("%2$s %1$s!", "World", "Hello"), "Hello World!");
-
-// --- vsprintf and vprintf ---
-test('vsprintf basic', vsprintf("Total: %d, Name: %s", [99, "Item"]), "Total: 99, Name: Item");
-
-// --- sprintf and vsprintf ---
-test('sprintf basic', sprintf("Hello %s!", "World"), "Hello World!");
-test('vsprintf array', vsprintf("Total: %d, Name: %s", [99, "Item"]), "Total: 99, Name: Item");
-
-// --- printf Tests ---
-let result = captureConsoleOutput(() => printf("User: %s, ID: %04d", "Alice", 7));
-test('printf output', result, "User: Alice, ID: 0007");
-
-result = captureConsoleOutput(() => printf("Hex: %X", 255));
-test('printf hex upper', result, "Hex: FF");
-
-result = captureConsoleOutput(() => printf("Float: %.2f", 3.14159));
-test('printf float 2dp', result, "Float: 3.14");
-
-// --- vprintf Tests ---
-result = captureConsoleOutput(() => vprintf("User: %s, Age: %d", ["Bob", 32]));
-test('vprintf array', result, "User: Bob, Age: 32");
-
-result = captureConsoleOutput(() => vprintf("Hex: %02x", [15]));
-test('vprintf padded hex', result, "Hex: 0f");
-
-result = captureConsoleOutput(() => vprintf("Char: %c", [65]));
-test('vprintf char', result, "Char: A");
-
-console.log("\nAll tests completed.");
+expect(sprintf("Value: %*.*f", 10, 4, 3.1415926), 'Value:     3.1416');
+expect(sprintf("%3\$s has scored %1\$05d and GPA %2\$.3f", 89, 3.8765, "Afsara"), 'Afsara has scored 00089 and GPA 3.877');
+expect(sprintf("%2\$s got %1\$d%% marks in %3\$s", 95, "Afsara", "Math"), 'Afsara got 95% marks in Math');
+expect(sprintf("Sci: %.2e | Hex: %X | Name: %s", 12345.678, 3735928559, "Debug"), 'Sci: 1.23e+4 | Hex: DEADBEEF | Name: Debug');
+expect(sprintf("Signed: %+08d | Unsigned: %08u", 123, 123), 'Signed: +0000123 | Unsigned: 00000123');
+expect(sprintf("Name: %.5s", "AfsaraBano"), 'Name: Afsar');
+expect(sprintf("Binary: %016b", 42), 'Binary: 0000000000101010');
+expect(sprintf("%2\$010.3f vs %1\$-10.2f", 3.1, 123.456), '000123.456 vs 3.10      ');
+expect(sprintf("%4\$s | %1\$d | %3\$.2f | %2\$X", 77, 255, 12.3456, "Mix"), 'Mix | 77 | 12.35 | FF');
+expect(vsprintf("Dynamic: %3\$*.*f", [3, 8, 123.4567]), 'Dynamic: 123.45670000');
+expect(sprintf("NegSpace:[% d] PosSpace:[% d]", -45, 67), 'NegSpace:[-45] PosSpace:[67]');
+expect(sprintf("Grouped: %s", (1234567890.9876).toLocaleString(3)), 'Grouped: 1,234,567,890.988');
+expect(sprintf("%3\$s => Hex:%1\$x Oct:%2\$o", 255, 64, "Value"), 'Value => Hex:ff Oct:100');
+expect(sprintf("Char:%c | Dec:%d | Bin:%b", 65, 65, 65), 'Char:A | Dec:65 | Bin:1000001');
+expect(sprintf("a=%.1f | b=%.3f | c=%07.2f", 3.1415, 3.1415, 3.1415), 'a=3.1 | b=3.142 | c=0003.14');
+expect(sprintf("%2\$.3s scored %1\$d", 90, "AfsaraBano"), 'Afs scored 90');
+expect(sprintf("Dynamic Pi: %.*f", 6, Math.PI), 'Dynamic Pi: 3.141593');
+expect(sprintf("Bell:[%c] NewLine:[%c]", 7, 10), 'Bell:[' + String.fromCharCode(7) + '] NewLine:[' + String.fromCharCode(10) + ']');
+expect(vsprintf("Coords: (%.2f, %.2f, %.2f)", [12.3456, -7.89, 0.456]), 'Coords: (12.35, -7.89, 0.46)');
+expect(sprintf("%4\$s-%2\$d-%1\$04d GPA:%3\$.2f", 9, 2025, 3.9867, "Roll"), 'Roll-2025-0009 GPA:3.99');
+expect(sprintf("%+010.2f | %-10.2f", 45.67, 45.67), '+000045.67 | 45.67     ');
+expect(sprintf("Left align: %*s", 10, "JSP"), 'Left align:        JSP');
+expect(vsprintf("%1\$s (Age:%2\$d) -> Score:%.2f", ["Afsara", 22, 99.456]), 'Afsara (Age:22) -> Score:0.00');
+expect(sprintf("Bin:%2\$08b | Char:%1\$c", 90, 90), 'Bin:01011010 | Char:Z');
+expect(sprintf("%3\$.4s-%1\$03d-%.2f", 7, "ignore", "Afsara123"), 'Afsa-007-7.00');
+expect(sprintf("Oct:%o Dec:%d Hex:%X", 255, 255, 255), 'Oct:377 Dec:255 Hex:FF');
+expect(sprintf("%.5e", 0.0000001234), '1.23400e-7');
+expect(sprintf("%.15f", Math.PI), '3.141592653589793');

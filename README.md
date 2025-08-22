@@ -1,15 +1,19 @@
-# printfy [![npm version](https://img.shields.io/npm/v/printfy?style=flat-square)](https://www.npmjs.com/package/printfy)
+printfy
+=======
 
 A lightweight JavaScript library implements C-style `printf` functionality.
 
-![license](https://img.shields.io/github/license/jsvibe/printfy?style=flat-square&color=blue)
-![author](https://img.shields.io/badge/Author-Indian%20Modassir-blue?style=flat-square)
-[![jsDelivr Hits](https://img.shields.io/jsdelivr/npm/hm/printfy?style=flat-square)](https://www.jsdelivr.com/package/npm/printfy)
-[![downloads month](https://img.shields.io/npm/dm/printfy?style=flat-square)](https://www.npmjs.com/package/printfy)
+[![npm version](https://img.shields.io/npm/v/printfy?logo=npm)](https://www.npmjs.com/package/printfy)
+![license](https://img.shields.io/github/license/jsvibe/printfy?color=blue)
+[![downloads month](https://img.shields.io/npm/dm/printfy)](https://www.npmjs.com/package/printfy)
+[![jsDelivr Hits](https://img.shields.io/jsdelivr/npm/hm/printfy?logo=jsdelivr)](https://www.jsdelivr.com/package/npm/printfy)
+![author](https://img.shields.io/badge/Author-Modassir-blue)
+[![Publish Package to npm](https://github.com/jsvibe/printfy/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/jsvibe/printfy/actions/workflows/npm-publish.yml)
 
 ---
 
-## 🌟 Features
+Features
+--------
 
 - Fully functional `printf`, `sprintf`, and `vsprintf` methods.
 - C-style format specifiers support:
@@ -27,14 +31,18 @@ A lightweight JavaScript library implements C-style `printf` functionality.
 
 ---
 
-## How to install printfy
+How to install printfy
+----------------------
+
 To include printfy in [Node](https://nodejs.org/), first install with npm.
 
 ```bash
 npm install printfy
 ```
 
-## How to build printfy
+How to build printfy
+--------------------
+
 Clone a copy of the main Sizzle git repo by running:
 
 ```bash
@@ -43,7 +51,9 @@ git clone git://github.com/jsvibe/printfy.git
 
 In the `printfy/dist` folder you will find build version of printfy along with the minified file.
 
-## Including printfy
+Including printfy
+-----------------
+
 Below are some of the most common ways to include printfy.
 
 ### Browser
@@ -51,7 +61,7 @@ Below are some of the most common ways to include printfy.
 **CDN Link**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/printfy@2.0.2/dist/printfy.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/printfy@2.0.3/dist/printfy.min.js"></script>
 ```
 
 You can add the script manually to your project:
@@ -60,11 +70,24 @@ You can add the script manually to your project:
 <script src="printfy.js"></script>
 ```
 
+**Direct use in Browser**
+
+```html
+<script>
+  // Direct use
+  sprintf(...);
+  vsprintf(...);
+  printf(...);
+  vprintf(...);
+</script>
+```
+
 ### Webpack / Browserify / Babel
+
 There are several ways to use [Webpack](https://webpack.js.org/), [Browserify](http://browserify.org/) or [Babel](https://babeljs.io/). For more information on using these tools, please refer to the corresponding project's documentation. In the script, including printfy will usually look like this:
 
 ```js
-import {sprintf, printf, vprintf, vsprintf} from "printfy";
+import {sprintf, printf, vprintf, vsprintf} from 'printfy'
 ```
 
 ### Node.js
@@ -72,12 +95,13 @@ import {sprintf, printf, vprintf, vsprintf} from "printfy";
 Fully compatible with [Node.js](https://nodejs.org/), this library lets you use familiar C-style printf formatting in server-side code—ideal for CLI tools, logging, and backend output formatting.
 
 ```js
-const {sprintf, printf, vprintf, vsprintf} = require("printfy");
+const {sprintf, printf, vprintf, vsprintf} = require('printfy')
 ```
 
 ---
 
-## API Usage
+API Usage
+---------
 
 ### `printf(format, ...args)`
 Logs the formatted output to the console.
@@ -113,7 +137,8 @@ vsprintf("User: %s, Score: %d", ["Bob", 100]);
 
 ---
 
-## 🔢 Supported Specifiers
+Supported Specifiers
+--------------------
 
 | Specifier | Meaning                               | Example                         |
 |-----------|---------------------------------------|---------------------------------|
@@ -132,7 +157,8 @@ vsprintf("User: %s, Score: %d", ["Bob", 100]);
 
 ---
 
-## ⚙️ Format Options
+Format Options
+--------------
 
 **Format syntax:**
 
@@ -142,7 +168,8 @@ vsprintf("User: %s, Score: %d", ["Bob", 100]);
 
 ---
 
-## 🧪 Examples
+Examples
+--------
 
 ```js
 sprintf("Binary: %08b", 5);          // Binary: 00000101
@@ -222,7 +249,8 @@ sprintf('%2$\'#-+10.2f and %1$\'*_10s', "JS", 3.14159);
 
 ---
 
-## ⚠️ Errors & Warnings
+Errors & Warnings
+-----------------
 
 - **ArgumentCountError**: Thrown if insufficient arguments are passed for format specifiers.
 - **ValueError**: Invalid specifier detected.
@@ -231,23 +259,25 @@ sprintf('%2$\'#-+10.2f and %1$\'*_10s', "JS", 3.14159);
 
 ---
 
-## 🔄 Comparison with Other Libraries
+Comparison with Other Libraries
+-------------------------------
 
-| Feature / Library      | printfy ✅         | sprintf-js 🟡 | fast-printf 🟢 | printf (npm) 🔵    |
-| ---------------------- | ------------------ | --------------- | --------------- | ----------------- |
-| C-style specifiers     | ✅ Full            | ✅ Full        | ✅ Partial      | ✅ Partial       |
-| %2\$ style arg index   | ✅ Yes             | ✅ Yes         | ❌ No           | ❌ No            |
-| BigInt support         | ✅ Yes             | ❌ No          | ❌ No           | ❌ No            |
-| %f vs %F (locale)      | ✅ Separate        | ❌ Combined    | ❌ Combined     | ❌ No            |
-| Custom padding ('x)    | ✅ `'x`, `0`, etc. | ❌ No          | ❌ No           | ❌ No            |
-| String return (sprintf)| ✅ Yes             | ✅ Yes         | ✅ Yes          | ❌ No            |
-| Lightweight / No deps  | ✅ Yes             | ✅ Yes         | ✅ Yes          | ✅ Yes           |
-| Unicode emoji safe     | Partial            | Partial         | ❌ No           | ❌ No            |
-| Performance            | Good               | Good            | Best             | Good             |
+| Feature / Library      | printfy ✓         | sprintf-js 🟡 | fast-printf 🟢 | printf (npm) 🔵 |
+| ---------------------- | ----------------- | -------------- | -------------- | ---------------- |
+| C-style specifiers     | ✓ Full            | ✓ Full        | ✓ Partial      | ✓ Partial       |
+| %2\$ style arg index   | ✓ Yes             | ✓ Yes         | ✗ No           | ✗ No            |
+| BigInt support         | ✓ Yes             | ✗ No          | ✗ No           | ✗ No            |
+| %f vs %F (locale)      | ✓ Separate        | ✗ Combined    | ✗ Combined     | ✗ No            |
+| Custom padding ('x)    | ✓ `'x`, `0`, etc. | ✗ No          | ✗ No           | ✗ No            |
+| String return (sprintf)| ✓ Yes             | ✓ Yes         | ✓ Yes          | ✗ No            |
+| Lightweight / No deps  | ✓ Yes             | ✓ Yes         | ✓ Yes          | ✓ Yes           |
+| Unicode emoji safe     | Partial           | Partial       | ✗ No           | ✗ No             |
+| Performance            | Good              | Good          | Best            | Good             |
 
 ---
 
-## 📦 Module Support
+Module Support
+--------------
 
 This library supports the following environments:
 
@@ -257,14 +287,16 @@ This library supports the following environments:
 
 ---
 
-## 🔐 License
+License
+-------
 
 MIT License © 2025 [Indian Modassir](https://github.com/indianmodassir)  
 See [LICENSE](LICENSE) for details.
 
 ---
 
-## 🙌 Contributions
+Contributions
+-------------
 
 Pull requests, bug reports, and feedback are welcome!  
 Visit the [GitHub Repository](https://github.com/jsvibe/printfy) to contribute.
