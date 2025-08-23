@@ -1,5 +1,9 @@
 # Release Notes
 
+## [v2.0.5](https://github.com/jsvibe/printfy/compare/v2.0.4...v2.0.5) - 23 August 2025
+
+- Fixed bugs likes `padding`, `width`, `precision`, `swapping` etc. to improved better than previous version [2.0.4] [@indianmodassir](https://github.com/indianmodassir)
+
 ## [v2.0.4](https://github.com/jsvibe/printfy/compare/v2.0.3...v2.0.4) - 22 August 2025
 
 - Removed local minified version now available only minified version on jsDelivr CDN. [@indianmodassir](https://github.com/indianmodassir)

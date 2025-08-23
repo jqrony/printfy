@@ -61,7 +61,7 @@ Below are some of the most common ways to include printfy.
 **CDN Link**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/printfy@2.0.4/dist/printfy.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/printfy@2.0.5/dist/printfy.min.js"></script>
 ```
 
 You can add the script manually to your project:
